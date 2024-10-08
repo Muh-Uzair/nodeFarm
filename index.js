@@ -6,6 +6,12 @@ const fs = require("fs");
 // VARIABLES
 const htmlPageNotFound = fs.readFileSync("./htmls/pageNotFound.html", "utf-8");
 const htmlIndex = fs.readFileSync("./index.html", "utf-8");
+const farmDataJson = fs.readFileSync("./data/appData/data.json", "utf-8");
+const homePageHtml = fs.readFileSync("./htmls/homePageHtml.html", "utf-8");
+const htmlVegesListElement = fs.readFileSync(
+  "./htmls/htmlVegesListElement.html",
+  "utf-8"
+);
 
 // ROUTING
 const server = http.createServer((req, res) => {
@@ -13,10 +19,25 @@ const server = http.createServer((req, res) => {
 
   // DIVIDER
   if (pathname === "/" || pathname === "/home") {
+    // 1 : prepare a markup from concerned file
+    const markupVegesListElement = `${htmlVegesListElement}`;
+
+    // 2 : replace teh above markup with place holder
+    let finalMakUp = homePageHtml.replace(
+      "{%VEGESLITS%}",
+      markupVegesListElement
+    );
+
+    // 4 : replace in index.html
+    output = htmlIndex.replace("{%REPLACE%}", finalMakUp);
+
+    // 3 : prepare header
     res.writeHead(200, {
       "Content-type": "text/html",
     });
-    res.end("<p>Home pg</p>");
+
+    // 4 : send response
+    res.end(output);
   }
   // DIVIDER
   else if (pathname === "/vegetableDetails") {
@@ -28,9 +49,9 @@ const server = http.createServer((req, res) => {
   // DIVIDER
   else if (pathname === "/farmData") {
     res.writeHead(200, {
-      "Content-type": "text/html",
+      "Content-type": "application/json",
     });
-    res.end("<p>Farm Data</p>");
+    res.end(farmDataJson);
   }
   // DIVIDER 404 route
   else {

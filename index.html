@@ -17,6 +17,88 @@
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
           sans-serif;
+        background: linear-gradient(to bottom right, #9be15d, #00e3ae);
+        overflow-y: hidden;
+      }
+
+      .divParentHomePage {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .h1NodeFarm {
+        color: white;
+        border: 1px solid white;
+        border-radius: 5px;
+        padding-left: 10px;
+        padding-inline: 10px;
+      }
+
+      .divVegesList {
+        width: 900px;
+      }
+
+      .ulVegesList {
+        width: 100%;
+        list-style: none;
+        padding: 0px;
+        margin: 0px;
+      }
+
+      .liVege {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 90px 1fr 120px 120px 70px 100px;
+        height: 80px;
+        border-width: 3px;
+        border-radius: 8px;
+        border: 5px solid white;
+      }
+
+      .liVege div {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .divVegeImg {
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        background-color: white;
+      }
+
+      .divVegeName {
+        background: linear-gradient(to bottom, #9be15d, #00e3ae);
+        color: white;
+      }
+
+      .divVegeOrganic {
+        background-color: white;
+        border-right: 1px solid rgba(159, 159, 159, 0.2);
+      }
+
+      .divVegeQuantity {
+        background-color: white;
+        border-right: 1px solid rgba(159, 159, 159, 0.2);
+      }
+
+      .divVegePrice {
+        background-color: white;
+      }
+
+      .divVegeDetails {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        background: linear-gradient(to bottom, #9be15d, #00e3ae);
+        color: white;
       }
 
       .parentDivPageNotFound {
@@ -33,7 +115,6 @@
         justify-content: center;
         width: 400px;
         height: 400px;
-        background-color: aqua;
       }
 
       .h1PageNotFound {
