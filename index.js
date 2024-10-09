@@ -3,10 +3,13 @@ const http = require("http");
 const url = require("url");
 const fs = require("fs");
 
+const prepareVegesList = require("./modules/prepareVegesList");
+
 // VARIABLES
 const htmlPageNotFound = fs.readFileSync("./htmls/pageNotFound.html", "utf-8");
 const htmlIndex = fs.readFileSync("./index.html", "utf-8");
 const farmDataJson = fs.readFileSync("./data/appData/data.json", "utf-8");
+const farmDataObj = JSON.parse(farmDataJson);
 const homePageHtml = fs.readFileSync("./htmls/homePageHtml.html", "utf-8");
 const htmlVegesListElement = fs.readFileSync(
   "./htmls/htmlVegesListElement.html",
@@ -19,14 +22,15 @@ const server = http.createServer((req, res) => {
 
   // DIVIDER
   if (pathname === "/" || pathname === "/home") {
+    const allVegeLisMarkUp = farmDataObj
+      .map((val) => prepareVegesList(val, htmlVegesListElement))
+      .join("");
+    // console.log(allVegeLisMarkUp);
     // 1 : prepare a markup from concerned file
-    const markupVegesListElement = `${htmlVegesListElement}`;
+    // const markupVegesListElement = `${htmlVegesListElement}`;
 
     // 2 : replace teh above markup with place holder
-    let finalMakUp = homePageHtml.replace(
-      "{%VEGESLITS%}",
-      markupVegesListElement
-    );
+    let finalMakUp = homePageHtml.replace("{%VEGESLITS%}", allVegeLisMarkUp);
 
     // 4 : replace in index.html
     output = htmlIndex.replace("{%REPLACE%}", finalMakUp);
@@ -40,10 +44,13 @@ const server = http.createServer((req, res) => {
     res.end(output);
   }
   // DIVIDER
-  else if (pathname === "/vegetableDetails") {
+  else if (pathname === "/vegeDetails") {
+    //  : prepare header
     res.writeHead(200, {
       "Content-type": "text/html",
     });
+
+    //  : send response
     res.end("<p>Details PG</p>");
   }
   // DIVIDER
