@@ -4,6 +4,7 @@ const url = require("url");
 const fs = require("fs");
 
 const prepareVegesList = require("./modules/prepareVegesList");
+const prepareVegeDetails = require("./modules/prepareVegeDetails");
 
 // VARIABLES
 const htmlPageNotFound = fs.readFileSync("./htmls/pageNotFound.html", "utf-8");
@@ -15,19 +16,21 @@ const htmlVegesListElement = fs.readFileSync(
   "./htmls/htmlVegesListElement.html",
   "utf-8"
 );
+const htmlVegeDetails = fs.readFileSync(
+  "./htmls/htmlVegeDetails.html",
+  "utf-8"
+);
 
 // ROUTING
 const server = http.createServer((req, res) => {
-  const { pathname } = url.parse(req.url, true);
+  const { pathname, query } = url.parse(req.url, true);
 
   // DIVIDER
   if (pathname === "/" || pathname === "/home") {
+    // 1 : prepare a markup list
     const allVegeLisMarkUp = farmDataObj
       .map((val) => prepareVegesList(val, htmlVegesListElement))
       .join("");
-    // console.log(allVegeLisMarkUp);
-    // 1 : prepare a markup from concerned file
-    // const markupVegesListElement = `${htmlVegesListElement}`;
 
     // 2 : replace teh above markup with place holder
     let finalMakUp = homePageHtml.replace("{%VEGESLITS%}", allVegeLisMarkUp);
@@ -35,23 +38,37 @@ const server = http.createServer((req, res) => {
     // 4 : replace in index.html
     output = htmlIndex.replace("{%REPLACE%}", finalMakUp);
 
-    // 3 : prepare header
+    // 5 : prepare header
     res.writeHead(200, {
       "Content-type": "text/html",
     });
 
-    // 4 : send response
+    // 6 : send response
     res.end(output);
   }
   // DIVIDER
   else if (pathname === "/vegeDetails") {
+    // 1 : get vegeName
+    const { vegeName } = query;
+
+    // 2 : get the concerned object out of the array
+    const dataVegeDetails = farmDataObj.find(
+      (val) => val.productName === vegeName
+    );
+
+    // 3 : prepare a markup
+    const markup = prepareVegeDetails(dataVegeDetails, htmlVegeDetails);
+
+    // 4 : replace it in the index.html
+    const output = htmlIndex.replace("{%REPLACE%}", markup);
+
     //  : prepare header
     res.writeHead(200, {
       "Content-type": "text/html",
     });
 
     //  : send response
-    res.end("<p>Details PG</p>");
+    res.end(output);
   }
   // DIVIDER
   else if (pathname === "/farmData") {
